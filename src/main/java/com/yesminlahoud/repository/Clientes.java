@@ -1,4 +1,4 @@
-package com.yesminlahoud.repositorio;
+package com.yesminlahoud.repository;
 
 import com.yesminlahoud.domain.entity.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +20,7 @@ public interface Clientes extends JpaRepository<Cliente, Integer> {
     void deleteByNome(String nome);
 
     boolean existsByNome(String nome);
+
+    @Query(" select c from Cliente c left join fetch c.pedidos where c.id = :id ")
+    Cliente findClienteFetchPedido( @Param("id") Integer id);
 }
