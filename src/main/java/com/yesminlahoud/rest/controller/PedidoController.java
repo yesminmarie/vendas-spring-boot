@@ -2,6 +2,8 @@ package com.yesminlahoud.rest.controller;
 
 import com.yesminlahoud.domain.entity.ItemPedido;
 import com.yesminlahoud.domain.entity.Pedido;
+import com.yesminlahoud.domain.enums.StatusPedido;
+import com.yesminlahoud.rest.dto.AtualizacaoStatusPedidoDTO;
 import com.yesminlahoud.rest.dto.InformacaoItemPedidoDTO;
 import com.yesminlahoud.rest.dto.InformacoesPedidoDTO;
 import com.yesminlahoud.rest.dto.PedidoDTO;
@@ -10,6 +12,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Status;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +44,14 @@ public class PedidoController {
                 .map( p -> converter(p))
                 .orElseThrow(() ->
                         new ResponseStatusException(NOT_FOUND, "Pedido não encontrado"));
+    }
+
+    @PatchMapping("{id}")
+    @ResponseStatus(NO_CONTENT)
+    public void updateStatus(@PathVariable Integer id,
+                             @RequestBody AtualizacaoStatusPedidoDTO dto){
+        String novoStatus = dto.getNovoStatus();
+        service.atualizaStatus(id, StatusPedido.valueOf(novoStatus));
     }
 
     private InformacoesPedidoDTO converter(Pedido pedido){

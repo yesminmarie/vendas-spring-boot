@@ -5,6 +5,7 @@ import com.yesminlahoud.domain.entity.ItemPedido;
 import com.yesminlahoud.domain.entity.Pedido;
 import com.yesminlahoud.domain.entity.Produto;
 import com.yesminlahoud.domain.enums.StatusPedido;
+import com.yesminlahoud.exception.PedidoNaoEncontradoException;
 import com.yesminlahoud.exception.RegraNegocioException;
 import com.yesminlahoud.repository.ClientesRepository;
 import com.yesminlahoud.repository.ItensPedidoRepository;
@@ -55,6 +56,17 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Optional<Pedido> obterPedidoCompleto(Integer id) {
         return pedidosRepository.findByIdFetchItens(id);
+    }
+
+    @Override
+    @Transactional
+    public void atualizaStatus(Integer id, StatusPedido statusPedido) {
+        pedidosRepository.
+                findById(id)
+                .map(pedido -> {
+                    pedido.setStatus(statusPedido);
+                    return pedidosRepository.save(pedido);
+                }).orElseThrow(() -> new PedidoNaoEncontradoException());
     }
 
     private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDTO> items){
