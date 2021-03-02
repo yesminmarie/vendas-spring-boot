@@ -4,6 +4,7 @@ import com.yesminlahoud.domain.entity.Cliente;
 import com.yesminlahoud.domain.entity.ItemPedido;
 import com.yesminlahoud.domain.entity.Pedido;
 import com.yesminlahoud.domain.entity.Produto;
+import com.yesminlahoud.domain.enums.StatusPedido;
 import com.yesminlahoud.exception.RegraNegocioException;
 import com.yesminlahoud.repository.ClientesRepository;
 import com.yesminlahoud.repository.ItensPedidoRepository;
@@ -42,6 +43,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setTotal(dto.getTotal());
         pedido.setDataPedido((LocalDate.now()));
         pedido.setCliente(cliente);
+        pedido.setStatus(StatusPedido.REALIZADO);
 
         List<ItemPedido> itensPedido = converterItems(pedido, dto.getItems());
         pedidosRepository.save(pedido);
