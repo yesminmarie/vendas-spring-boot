@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente save( @RequestBody Cliente cliente){
+    public Cliente save( @RequestBody @Valid Cliente cliente){
         return clientesRepository.save(cliente);
     }
 
@@ -53,7 +54,7 @@ public class ClienteController {
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable Integer id,
-                                 @RequestBody Cliente cliente) {
+                                 @RequestBody @Valid Cliente cliente) {
         clientesRepository
                 .findById(id)
                 .map( clienteExistente -> {
