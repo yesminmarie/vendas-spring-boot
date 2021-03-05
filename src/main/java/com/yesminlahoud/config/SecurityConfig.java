@@ -31,6 +31,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // esse método configura as páginas que cada usuário autenticado pode acessar
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        super.configure(http);
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                    .antMatchers("/api/clientes/**")
+                        .permitAll()
+                .and()
+                    .formLogin();
+
+        //authenticated() -> permite que qualquer usuário autenticado tenha acesso
+        //permitAll() -> permite que todos os usuários tenham acesso
+        //hasRole() -> permite que os usuários com um determinado papel acessem. Exemplo: hasRole("USER")
+        //hasAuthority() -> apenas usuários que tem determinada authority podem acessar. Exemplo: hasAuthority("MANTER USUARIO")
+
+        //and()-> volta para a raiz do objeto
+        //formLogin() -> cria o formulário padrão de login do spring security ou indica o caminho para um formulário customizado
+
     }
 }
