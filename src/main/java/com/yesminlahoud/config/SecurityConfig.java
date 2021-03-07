@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder())
                 .withUser("fulano")
                 .password(passwordEncoder().encode("123"))
-                .roles("USER");
+                .roles("USER", "ADMIN");
     }
 
     // esse método configura as páginas que cada usuário autenticado pode acessar
@@ -35,8 +35,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                     .antMatchers("/api/clientes/**")
-                        .permitAll()
-                .and()
+                        .hasAnyRole("USER", "ADMIN")
+                    .antMatchers("/api/pedidos/**")
+                        .hasAnyRole("USER", "ADMIN")
+                    .antMatchers("/api/produtos/**")
+                        .hasRole("ADMIN")
+                    .and()
                     .formLogin();
 
         //authenticated() -> permite que qualquer usuário autenticado tenha acesso
