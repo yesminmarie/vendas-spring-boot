@@ -41,15 +41,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/produtos/**")
                         .hasRole("ADMIN")
                     .and()
-                    .formLogin();
+                    .httpBasic();
 
-        //authenticated() -> permite que qualquer usuário autenticado tenha acesso
-        //permitAll() -> permite que todos os usuários tenham acesso
-        //hasRole() -> permite que os usuários com um determinado papel acessem. Exemplo: hasRole("USER")
-        //hasAuthority() -> apenas usuários que tem determinada authority podem acessar. Exemplo: hasAuthority("MANTER USUARIO")
+        // authenticated() -> permite que qualquer usuário autenticado tenha acesso
+        // permitAll() -> permite que todos os usuários tenham acesso
+        // hasRole() -> permite que os usuários com um determinado papel acessem. Exemplo: hasRole("USER")
+        // hasAuthority() -> apenas usuários que tem determinada authority podem acessar. Exemplo: hasAuthority("MANTER USUARIO")
 
-        //and()-> volta para a raiz do objeto
-        //formLogin() -> cria o formulário padrão de login do spring security ou indica o caminho para um formulário customizado
-
+        // and()-> volta para a raiz do objeto
+        // formLogin() -> cria o formulário padrão de login do spring security ou indica o caminho para um formulário customizado
+        // httpBasic() -> ao invés de usar um formulário, permite fazer uma requisição passando um header com as credenciais
     }
 }
