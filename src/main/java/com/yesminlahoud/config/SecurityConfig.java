@@ -1,5 +1,7 @@
 package com.yesminlahoud.config;
 
+import com.yesminlahoud.service.impl.UsuarioServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private UsuarioServiceImpl usuarioService;
+
     // método que faz a criptografia
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -21,11 +26,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // esse método faz a autenticação
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder())
-                .withUser("fulano")
-                .password(passwordEncoder().encode("123"))
-                .roles("USER", "ADMIN");
+        auth
+                .userDetailsService(usuarioService)
+                .passwordEncoder(passwordEncoder());
     }
 
     // esse método configura as páginas que cada usuário autenticado pode acessar
