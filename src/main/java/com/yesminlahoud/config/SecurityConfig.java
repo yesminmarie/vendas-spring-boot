@@ -3,6 +3,7 @@ package com.yesminlahoud.config;
 import com.yesminlahoud.service.impl.UsuarioServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -43,7 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .hasAnyRole("USER", "ADMIN")
                     .antMatchers("/api/produtos/**")
                         .hasRole("ADMIN")
-                    .and()
+                    .antMatchers(HttpMethod.POST, "/api/usuarios/**")
+                        .permitAll()
+                    .anyRequest().authenticated()
+                .and()
                     .httpBasic();
 
         // authenticated() -> permite que qualquer usuário autenticado tenha acesso
@@ -51,6 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // hasRole() -> permite que os usuários com um determinado papel acessem. Exemplo: hasRole("USER")
         // hasAuthority() -> apenas usuários que tem determinada authority podem acessar. Exemplo: hasAuthority("MANTER USUARIO")
 
+        // .anyRequest().authenticated() -> caso alguma url não tenha sido mapeada, o usuário poderá acessá-la apenas se estiver autenticado
         // and()-> volta para a raiz do objeto
         // formLogin() -> cria o formulário padrão de login do spring security ou indica o caminho para um formulário customizado
         // httpBasic() -> ao invés de usar um formulário, permite fazer uma requisição passando um header com as credenciais

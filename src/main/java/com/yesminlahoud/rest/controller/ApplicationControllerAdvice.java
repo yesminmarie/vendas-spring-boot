@@ -1,4 +1,4 @@
-package com.yesminlahoud.repository;
+package com.yesminlahoud.rest.controller;
 
 import com.yesminlahoud.exception.PedidoNaoEncontradoException;
 import com.yesminlahoud.exception.RegraNegocioException;
